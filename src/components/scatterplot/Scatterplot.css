@@ -1,5 +1,12 @@
+.scatterplotWrapper {
+    display: flex; /* Posiziona i contenuti fianco a fianco */
+    justify-content: space-around; /* Spazia uniformemente i contenuti */
+    align-items: center; /* Allinea verticalmente */
+    padding: 20px; /* Opzionale: aggiungi padding intorno */
+}
+
 .scatterplotDivContainer {
-    width: 100%;
-    height: 500px; /* Puoi scegliere l'altezza che ti serve */
+    width: 45%; /* Rende i grafici più piccoli per adattarsi */
+    height: 500px;
     position: relative;
 }

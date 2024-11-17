@@ -27,6 +27,7 @@ function App() {
         </div>  
         <div id="view-container" className="row">
           <ScatterplotContainer/>
+          <ScatterplotContainer/>
           {/* <YourVisContainer/> */}
         </div>
     </div>

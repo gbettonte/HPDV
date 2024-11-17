@@ -80,8 +80,13 @@ function ScatterplotContainer(){
             const scatterplotD3 = scatterplotD3Ref.current;
             scatterplotD3.renderScatterplot(validBikeData, xAxis, yAxis, {
                 handleOnClick: (pointData) => {
-                    //alert("Clicked point:", pointData); // Log del punto cliccato
-                    alert(`Clicked point: X = ${pointData[xAxis]}, Y = ${pointData[yAxis]}`);
+                    // Crea una stringa formattata con tutte le proprietà del punto
+                    const pointDetails = Object.entries(pointData)
+                        .map(([key, value]) => `${key}: ${value}`) // Trasforma ogni coppia chiave-valore in una stringa
+                        .join('\n'); // Unisci tutte le stringhe con un a capo per renderle leggibili
+                
+                    // Mostra l'alert con i dettagli del punto
+                    alert(`Clicked point details:\n${pointDetails}`);
                 }
             });
         } else {

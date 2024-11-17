@@ -14,9 +14,16 @@ class ScatterplotD3{
     xScale;
     yScale;
 
-    constructor(el){
-        this.el=el;
-    };
+    constructor(el) {
+        this.el = el;
+    
+        // Definisci la scala di colori per la variabile "Seasons"
+        this.colorScale = d3.scaleOrdinal()
+            .domain(['Spring', 'Summer', 'Autumn', 'Winter']) // Valori categoriali
+            .range(['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']); // Colori corrispondenti
+    }
+    
+    
 
     create = function (config) {
         this.size = {width: config.size.width, height: config.size.height};
@@ -72,6 +79,9 @@ class ScatterplotD3{
                 const yPos = this.yScale(item[yAttribute]);
                 return "translate("+xPos+","+yPos+")";
             })
+            // Aggiorna il colore basato su `Seasons`
+        selection.select(".dotCircle")
+            .attr("fill", (item) => this.colorScale(item.Seasons));
         this.changeBorderAndOpacity(selection)
     }
 
@@ -139,6 +149,7 @@ class ScatterplotD3{
                         .attr("class","dotCircle")
                         .attr("r",this.circleRadius)
                         .attr("stroke","red")
+                        .attr("fill", (item) => this.colorScale(item.Seasons)); // Usa la scala di colori qui!
                     ;
                     this.updateDots(itemG,xAttribute,yAttribute);
                 },
