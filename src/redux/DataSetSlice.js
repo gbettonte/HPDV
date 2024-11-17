@@ -26,6 +26,6 @@ export const dataSetSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { updateSelectedItem } = dataSetSlice.actions
+//export const { updateSelectedItem } = dataSetSlice.actions
 
 export default dataSetSlice.reducer
