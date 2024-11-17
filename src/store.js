@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import dataSetReducer from './redux/DataSetSlice'
 import controlBarReducer from './redux/ControlBarSlice'
+import brushReducer from './redux/BrushSlice'
 export default configureStore({
   reducer: {
     dataSet: dataSetReducer,
-    controlbar: controlBarReducer
+    controlbar: controlBarReducer,
+    brushslice: brushReducer,  // Aggiungi il reducer per brush
     }
 })

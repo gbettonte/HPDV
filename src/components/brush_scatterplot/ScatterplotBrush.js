@@ -1,9 +1,9 @@
-import './Scatterplot.css'
+import '../scatterplot/Scatterplot.css'
 import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import ScatterplotD3 from './Scatterplot-d3';
+import ScatterplotD3 from './ScatterBrush-d3';
 import { setXAxis, setYAxis } from "../../redux/ControlBarSlice";
-import { selectedItems } from "../../redux/BrushSlice"; // Importa la selezione del brushing
+import { setSelectedItems, clearSelectedItems } from "../../redux/BrushSlice";
 
 // Lista delle variabili numeriche che l'utente può scegliere
 const numericVariables = [
@@ -26,37 +26,51 @@ function ScatterplotContainer() {
     const yAxis = useSelector(state => state.controlbar.yAxis); // Ottieni l'asse Y dal Redux store
     const filterType = useSelector(state => state.controlbar.filterType); // Ottieni il filtro dal Redux store
     const selectedItems = useSelector(state => state.brushslice.selectedItems); // Ottieni gli items selezionati tramite il brush
-
     const divContainerRef = useRef(null);
     const scatterplotD3Ref = useRef(null);
 
     const getCharSize = function () {
-        let width;
-        let height;
+        let width, height;
         if (divContainerRef.current !== undefined) {
             width = divContainerRef.current.offsetWidth;
             height = divContainerRef.current.offsetHeight;
         }
-        return { width: width, height: height };
-    }
+        return { width, height };
+    };
 
-    // did mount chiamato solo quando il componente è montato per la prima volta
     useEffect(() => {
-        //console.log("ScatterplotContainer useEffect [] called once the component did mount");
+        console.log("ScatterplotContainer useEffect [] called once the component did mount");
+
+        // Definisci controllerMethods
+        const controllerMethods = {
+            bikeData: bikeData,        // Dati delle biciclette
+            xAxis: xAxis,              // Asse X
+            yAxis: yAxis,              // Asse Y
+            handleOnClick: (pointData) => {
+                // Crea una stringa formattata con tutte le proprietà del punto
+                const pointDetails = Object.entries(pointData)
+                    .map(([key, value]) => `${key}: ${value}`) // Trasforma ogni coppia chiave-valore in una stringa
+                    .join('\n'); // Unisci tutte le stringhe con un a capo per renderle leggibili
+
+                // Mostra l'alert con i dettagli del punto
+                alert(`Clicked point details:\n${pointDetails}`);
+            }
+        };
+
+        // Crea l'istanza di ScatterplotD3 e passale controllerMethods
         const scatterplotD3 = new ScatterplotD3(divContainerRef.current, dispatch);
-        scatterplotD3.create({ size: getCharSize() });
+        scatterplotD3.create({ size: getCharSize() }, controllerMethods);  // Passa controllerMethods qui
         scatterplotD3Ref.current = scatterplotD3;
+
         return () => {
-            //console.log("ScatterplotContainer useEffect [] return function, called when the component did unmount...");
+            console.log("ScatterplotContainer useEffect [] return function, called when the component did unmount...");
             const scatterplotD3 = scatterplotD3Ref.current;
             scatterplotD3.clear();
         }
-    }, []); // useEffect eseguito solo al montaggio del componente
+    }); // useEffect eseguito solo al montaggio del componente
 
     useEffect(() => {
-        //console.log("ScatterplotContainer: Updating data...");
-        //console.log("Selected X Axis:", xAxis, "Selected Y Axis:", yAxis);
-        //console.log("Bike data:", bikeData);
+
 
         // Filtra i dati in base al filterType (All, Holiday, FunctioningDay)
         const filteredData = (() => {
@@ -81,27 +95,22 @@ function ScatterplotContainer() {
                 return;
             }
 
-            //console.log("Valid data to render:", validBikeData);
+            console.log("Valid data to render (Brush):", validBikeData);
 
+            // Passa i dati e gestisci il rendering del grafico
             const scatterplotD3 = scatterplotD3Ref.current;
-            // Se ci sono degli items selezionati dal brushing, usiamo quelli, altrimenti mostriamo i dati filtrati
-            const dataToRender = selectedItems.length > 0 ? selectedItems : validBikeData;
-
-            scatterplotD3.renderScatterplot(dataToRender, xAxis, yAxis, {
+            scatterplotD3.renderScatterplot(validBikeData, xAxis, yAxis, {
                 handleOnClick: (pointData) => {
-                    // Crea una stringa formattata con tutte le proprietà del punto
                     const pointDetails = Object.entries(pointData)
-                        .map(([key, value]) => `${key}: ${value}`) // Trasforma ogni coppia chiave-valore in una stringa
-                        .join('\n'); // Unisci tutte le stringhe con un a capo per renderle leggibili
-
-                    // Mostra l'alert con i dettagli del punto
+                        .map(([key, value]) => `${key}: ${value}`)
+                        .join('\n');
                     alert(`Clicked point details:\n${pointDetails}`);
                 }
             });
         } else {
             console.warn("No data available for selected axes.");
         }
-    });//, [bikeData, xAxis, yAxis, selectedItems, dispatch]); // Aggiungi `selectedItems` come dipendenza
+    });//, [bikeData, xAxis, yAxis, filterType, selectedItems, dispatch]); // Aggiornamento ogni volta che i dati o gli assi cambiano
 
     return (
         <div ref={divContainerRef} className="scatterplotDivContainer col2"></div>

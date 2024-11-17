@@ -9,7 +9,7 @@ class ScatterplotD3{
     matSvg;
     // add specific class properties used for the vis render/updates
     defaultOpacity=0.3;
-    transitionDuration=10;
+    transitionDuration=1;
     circleRadius = 3;
     xScale;
     yScale;
@@ -40,7 +40,7 @@ class ScatterplotD3{
             .attr("class","matSvgG")
             .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
         ;
-        console.log("SVG created:", this.matSvg); // Log per verificare la creazione dell'elemento SVG
+        //console.log("SVG created:", this.matSvg); // Log per verificare la creazione dell'elemento SVG
 
 
         this.xScale = d3.scaleLinear().range([0,this.width]);
@@ -109,8 +109,8 @@ class ScatterplotD3{
         const maxY = d3.max(visData.map(item=>item[yAttribute]));
         // this.yScale.domain([0, maxY]);
         this.yScale.domain([minY, maxY]);
-        console.log("xScale domain:", this.xScale.domain()); // Verifica il dominio della scala X
-    console.log("yScale domain:", this.yScale.domain()); // Verifica il dominio della scala Y
+        //console.log("xScale domain:", this.xScale.domain()); // Verifica il dominio della scala X
+    //console.log("yScale domain:", this.yScale.domain()); // Verifica il dominio della scala Y
         this.matSvg.select(".xAxisG")
             .transition().duration(this.transitionDuration)
             .call(d3.axisBottom(this.xScale))
@@ -124,10 +124,10 @@ class ScatterplotD3{
     renderScatterplot = function (visData, xAttribute, yAttribute, controllerMethods){
         // build the size scales and x,y axis
             // Verifica che i dati siano corretti per i parametri selezionati
-        visData.forEach(item => {
-            console.log(`x: ${item[xAttribute]}, y: ${item[yAttribute]}`);
-        });
-        console.log("Rendering scatterplot with data:", visData); // Log per verificare che i dati siano passati
+        //visData.forEach(item => {
+          //  console.log(`x: ${item[xAttribute]}, y: ${item[yAttribute]}`);
+        //});
+        //console.log("Rendering scatterplot with data:", visData); // Log per verificare che i dati siano passati
         this.updateAxis(visData,xAttribute,yAttribute);
 
         this.matSvg.selectAll(".dotG")

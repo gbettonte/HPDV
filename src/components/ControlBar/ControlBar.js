@@ -65,17 +65,7 @@ function ControlBar() {
           ))}
         </select>
       </div>
-
-      <div className="control-item">
-        <label htmlFor="filterSelect">Select type of day:</label>
-        <select id="filterSelect" value={filterType} onChange={handleFilterChange}>
-          {filterOptions.map((filter) => (
-            <option key={filter} value={filter}>
-              {filter}
-            </option>
-          ))}
-        </select>
-      </div>
+      
     </div>
   );
 }

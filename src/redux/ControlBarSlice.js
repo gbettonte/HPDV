@@ -8,7 +8,6 @@ export const  controlBarSlice = createSlice({
       xAxis: 'RentedBikeCount',  // default yxaxis
       yAxis: 'Temperature',      // default y axis
       data: [],                  // Data
-      selectedItem: null,        //to store the selected item
     },
     reducers: {
         setXAxis: (state, action) => {
@@ -20,9 +19,6 @@ export const  controlBarSlice = createSlice({
         setFilterType: (state, action) => {
           state.filterType = action.payload; // Aggiorna il filtro
         },
-        updateSelectedItem: (state, action) => {
-          state.selectedItem = action.payload;
-        }
       }
 });
 
