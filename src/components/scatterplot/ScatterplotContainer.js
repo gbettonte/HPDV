@@ -16,59 +16,63 @@ const numericVariables = [
     'SolarRadiation',
     'Rainfall',
     'Snowfall'
-  ];
-function ScatterplotContainer(){
+];
+
+function ScatterplotContainer() {
     const dispatch = useDispatch();
     const bikeData = useSelector(state => state.dataSet.data); // Ottieni il dataset di biciclette
     const xAxis = useSelector(state => state.controlbar.xAxis); // Ottieni l'asse X dal Redux store
     const yAxis = useSelector(state => state.controlbar.yAxis); // Ottieni l'asse Y dal Redux store
+    const filterType = useSelector(state => state.controlbar.filterType); // Ottieni il filtro dal Redux store
 
-    // every time the component re-render
-    useEffect(()=>{
-        console.log("ScatterplotContainer useEffect (called each time render)");
-    }); // if no dependencies, useEffect is called at each re-render
-    
-    const divContainerRef=useRef(null);
-    const scatterplotD3Ref = useRef(null)
-    
-    const getCharSize = function(){
-        // fixed size
-        // return {width:900, height:900};
-        // getting size from parent item
-        let width;// = 800;
-        let height;// = 100;
-        if(divContainerRef.current!==undefined){
-        width=divContainerRef.current.offsetWidth;
-        // width = '100%';
-        height=divContainerRef.current.offsetHeight;
-        // height = '100%';
+    const divContainerRef = useRef(null);
+    const scatterplotD3Ref = useRef(null);
+
+    const getCharSize = function () {
+        let width;
+        let height;
+        if (divContainerRef.current !== undefined) {
+            width = divContainerRef.current.offsetWidth;
+            height = divContainerRef.current.offsetHeight;
         }
-        return {width:width,height:height};
+        return { width: width, height: height };
     }
 
-    // did mount called once the component did mount
-    useEffect(()=>{
+    // did mount chiamato solo quando il componente è montato per la prima volta
+    useEffect(() => {
         console.log("ScatterplotContainer useEffect [] called once the component did mount");
         const scatterplotD3 = new ScatterplotD3(divContainerRef.current);
-        scatterplotD3.create({size:getCharSize()});
+        scatterplotD3.create({ size: getCharSize() });
         scatterplotD3Ref.current = scatterplotD3;
-        return ()=>{
-            // did unmout, the return function is called once the component did unmount (removed for the screen)
+        return () => {
             console.log("ScatterplotContainer useEffect [] return function, called when the component did unmount...");
             const scatterplotD3 = scatterplotD3Ref.current;
-            scatterplotD3.clear()
+            scatterplotD3.clear();
         }
-    },[]);// if empty array, useEffect is called after the component did mount (has been created)
+    }, []); // useEffect eseguito solo al montaggio del componente
 
     useEffect(() => {
         console.log("ScatterplotContainer: Updating data...");
-        console.log("Selected X Axis:", xAxis, "Selected Y Axis:", yAxis); // Log degli assi selezionati
-        console.log("Bike data:", bikeData); // Log dei dati delle biciclette
+        console.log("Selected X Axis:", xAxis, "Selected Y Axis:", yAxis);
+        console.log("Bike data:", bikeData);
 
-        // Verifica che i dati e gli assi non siano vuoti o non validi
-        if (bikeData && xAxis && yAxis) {
+        // Filtra i dati in base al filterType (All, Holiday, FunctioningDay)
+        const filteredData = (() => {
+            if (filterType === "All") {
+                return bikeData;
+            } else if (filterType === "Holiday") {
+                return bikeData.filter((point) => point.Holiday === "Holiday");
+            } else if (filterType === "FunctioningDay") {
+                return bikeData.filter((point) => point.FunctioningDay === "Yes");
+            } else {
+                return bikeData;
+            }
+        })();
+
+        // Verifica che i dati filtrati siano validi e che gli assi siano selezionati
+        if (filteredData && xAxis && yAxis) {
             // Converte i dati in numerici se non lo sono
-            const validBikeData = bikeData.filter(item => !isNaN(item[xAxis]) && !isNaN(item[yAxis]));
+            const validBikeData = filteredData.filter(item => !isNaN(item[xAxis]) && !isNaN(item[yAxis]));
 
             if (validBikeData.length === 0) {
                 console.error("No valid data for selected axes.");
@@ -92,9 +96,9 @@ function ScatterplotContainer(){
         } else {
             console.warn("No data available for selected axes.");
         }
-    },[bikeData, xAxis, yAxis, dispatch]); // Aggiornamento ogni volta che i dati o gli assi cambiano
+    }, [bikeData, xAxis, yAxis, filterType, dispatch]); // Aggiornamento ogni volta che i dati o gli assi cambiano
 
-    return(
+    return (
         <div ref={divContainerRef} className="scatterplotDivContainer col2"></div>
     )
 }

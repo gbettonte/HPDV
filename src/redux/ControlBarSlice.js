@@ -17,12 +17,15 @@ export const  controlBarSlice = createSlice({
         setYAxis: (state, action) => {
           state.yAxis = action.payload;
         },
+        setFilterType: (state, action) => {
+          state.filterType = action.payload; // Aggiorna il filtro
+        },
         updateSelectedItem: (state, action) => {
           state.selectedItem = action.payload;
         }
       }
 });
 
-export const { setXAxis, setYAxis, updateSelectedItem } = controlBarSlice.actions;
+export const { setXAxis, setYAxis, setFilterType, updateSelectedItem } = controlBarSlice.actions;
 
 export default controlBarSlice.reducer;
