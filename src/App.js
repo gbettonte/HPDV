@@ -3,7 +3,7 @@ import { useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import { getSeoulBikeData } from './redux/DataSetSlice';
 import ControlBar from './components/ControlBar/ControlBar';
-
+import ScatterplotContainer from "./components/scatterplot/ScatterplotContainer";
 // here import other dependencies
 
 // a component is a piece of code which render a part of the user interface
@@ -26,7 +26,7 @@ function App() {
           <ControlBar/>
         </div>  
         <div id="view-container" className="row">
-          {/*<ScatterplotContainer/>*/}
+          <ScatterplotContainer/>
           {/* <YourVisContainer/> */}
         </div>
     </div>

@@ -1,0 +1,5 @@
+.scatterplotDivContainer {
+    width: 100%;
+    height: 500px; /* Puoi scegliere l'altezza che ti serve */
+    position: relative;
+}

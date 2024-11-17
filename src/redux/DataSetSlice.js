@@ -13,19 +13,26 @@ export const getSeoulBikeData = createAsyncThunk('seoulBikeData/fetchData', asyn
 
 export const dataSetSlice = createSlice({
   name: 'dataSet',
-  initialState: [],
+  initialState: {data: []},
   reducers: {
       // add reducer if needed
   },
-  extraReducers: builder => {
-    builder.addCase(getSeoulBikeData.fulfilled, (state, action) => {
-      // Add any fetched house to the array
-      return action.payload
-    })
+  extraReducers: (builder) => {
+    builder
+      .addCase(getSeoulBikeData.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getSeoulBikeData.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.data = action.payload;  // I dati caricati vengono salvati nello store
+      })
+      .addCase(getSeoulBikeData.rejected, (state) => {
+        state.status = 'failed';
+      });
   }
 })
 
 // Action creators are generated for each case reducer function
 //export const { updateSelectedItem } = dataSetSlice.actions
 
-export default dataSetSlice.reducer
+export default dataSetSlice.reducer;
