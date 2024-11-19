@@ -79,6 +79,7 @@ class ScatterplotD3{
                 const yPos = this.yScale(item[yAttribute]);
                 return "translate("+xPos+","+yPos+")";
             })
+            // Aggiorna il colore basato su `Seasons`
         selection.select(".dotCircle")
         .attr("fill", (item) => {
             // Check if the current item is in selectedItems
@@ -86,11 +87,12 @@ class ScatterplotD3{
                 return this.colorScale(item.Seasons);  // Color for selected items
             }
             return 'black'; // Default color scale
-        });
+        });// Usa la scala di colori qui!
         this.changeBorderAndOpacity(selection)
     }
 
     highlightSelectedItems(selectedItems){
+        // Crea un Set per gli indici selezionati, per una ricerca più veloce
         const selectedIndices = new Set(selectedItems.map(item => item.index));
         
         this.matSvg.selectAll(".dotG")
@@ -98,9 +100,10 @@ class ScatterplotD3{
             .join(
                 enter => enter,
                 update => {
-                    // change color for selectedItems
+                    // Cambia colore basato sul Set di indici selezionati
                     update.select(".dotCircle")
                         .attr("fill", (item) => {
+                            // Usa il Set per una ricerca rapida
                             return selectedIndices.has(item.index) ? this.colorScale(item.Seasons) : 'black';
                         });
                     this.changeBorderAndOpacity(update);
@@ -113,10 +116,11 @@ class ScatterplotD3{
     updateAxis = function(visData,xAttribute,yAttribute){
         const minX = d3.min(visData.map(item=>item[xAttribute]));
         const maxX = d3.max(visData.map(item=>item[xAttribute]));
+        // this.xScale.domain([0, maxX]);
         this.xScale.domain([minX, maxX]);
         const minY = d3.min(visData.map(item=>item[yAttribute]));
         const maxY = d3.max(visData.map(item=>item[yAttribute]));
-
+        // this.yScale.domain([0, maxY]);
         this.yScale.domain([minY, maxY]);
         //console.log("xScale domain:", this.xScale.domain()); // Verifica il dominio della scala X
     //console.log("yScale domain:", this.yScale.domain()); // Verifica il dominio della scala Y

@@ -98,13 +98,13 @@ class ScatterplotD3 {
         const scaledX1 = this.xScale.invert(x1);
         const scaledY1 = this.yScale.invert(y1);
     
-        // Ordina correttamente i limiti Y
+        //ordrr index
         const [yMin, yMax] = scaledY0 > scaledY1 ? [scaledY1, scaledY0] : [scaledY0, scaledY1];
     
-        // Log dei limiti corretti
+        //logs
         console.log("Corrected Y selection:", yMin, yMax);
     
-        // Verifica che xAxis e yAxis siano validi e corrispondano ai dati
+        ///Veirfy axis
         if (!xAxis || !yAxis) {
             console.error("xAxis or yAxis is not defined.");
             return;
@@ -115,42 +115,39 @@ class ScatterplotD3 {
             const xValue = Number(d[xAxis]);
             const yValue = Number(d[yAxis]);
     
-            // Log dei valori originali e convertiti
+            //control logs
             console.log(`Original point: x: ${d[xAxis]}, y: ${d[yAxis]}`);
             console.log(`Converted point: x: ${xValue}, y: ${yValue}`);
-    
-            // Log dei valori filtrati
             console.log(`Filtering point: x: ${xValue}, y: ${yValue}`);
     
-            // Filtra solo se i valori sono numerici e rientrano nei limiti di selezione
+            //check data
             return !isNaN(xValue) && !isNaN(yValue) && xValue >= scaledX0 && xValue <= scaledX1 && yValue >= yMin && yValue <= yMax;
         });
     
         // Log dei dati selezionati
         console.log("Brushed Data:", brushedData);
     
-        // Se ci sono dati validi, aggiorna lo stato di Redux
         if (brushedData.length > 0) {
-            this.dispatch(setSelectedItems(brushedData)); // Aggiorna Redux con i dati selezionati
+            this.dispatch(setSelectedItems(brushedData)); //update Redux store
         } else {
             console.warn("No valid data found for the selected area.");
         }
     }
     
-    
-    
+    changeBorderAndOpacity(selection){
+        selection.style("opacity", (item)=>{
+            return item.selected?1:this.defaultOpacity;
+        })
+        ;
 
-    // Aggiungi il metodo changeBorderAndOpacity
-    changeBorderAndOpacity(selection) {
-        selection.selectAll("circle")
-            .transition().duration(this.transitionDuration)
-            .style("opacity", this.defaultOpacity)
-            .attr("stroke", "black")
-            .attr("stroke-width", 1);
+        selection.select(".dotCircle")
+            .attr("stroke-width",(item)=>{
+                return item.selected?2:0;
+            })
+        ;
     }
-
+    
     updateDots(selection, xAttribute, yAttribute) {
-        // trasformazione e aggiornamento dei punti
         selection.transition().duration(this.transitionDuration)
             .attr("transform", (item) => {
                 const xPos = this.xScale(item[xAttribute]);
@@ -158,7 +155,6 @@ class ScatterplotD3 {
                 return "translate(" + xPos + "," + yPos + ")";
             });
 
-        // Aggiorna il colore dei punti in base alla variabile "Seasons"
         selection.select(".dotCircle")
             .attr("fill", (item) => this.colorScale(item.Seasons));
 

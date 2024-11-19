@@ -1,4 +1,4 @@
-import './Scatterplot.css'
+import '../scatterplot/Scatterplot.css'
 import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ScatterplotD3 from './Scatterplot-d3';
@@ -85,9 +85,9 @@ function ScatterplotContainer() {
 
             const scatterplotD3 = scatterplotD3Ref.current;
             // Se ci sono degli items selezionati dal brushing, usiamo quelli, altrimenti mostriamo i dati filtrati
-            //const dataToRender = selectedItems.length > 0 ? selectedItems : validBikeData;
+            const dataToRender = selectedItems.length > 0 ? selectedItems : validBikeData;
 
-            scatterplotD3.renderScatterplot(validBikeData, xAxis, yAxis, selectedItems,{
+            scatterplotD3.renderScatterplot(dataToRender, xAxis, yAxis, selectedItems,{
                 handleOnClick: (pointData) => {
                     // Crea una stringa formattata con tutte le proprietà del punto
                     const pointDetails = Object.entries(pointData)

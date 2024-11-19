@@ -5,6 +5,7 @@ import { getSeoulBikeData } from './redux/DataSetSlice';
 import ControlBar from './components/ControlBar/ControlBar';
 import ScatterplotContainer from "./components/scatterplot/ScatterplotContainer";
 import ScatterplotBrush from "./components/brush_scatterplot/ScatterplotBrush";
+import ScatterplotZoomContainer from "./components/zoom_scatterplot/ScatterplotZoomContainer";
 
 // a component is a piece of code which render a part of the user interface
 function App() {
@@ -27,6 +28,7 @@ function App() {
         </div>  
         <div id="view-container" className="row">
           <ScatterplotContainer/>
+          <ScatterplotZoomContainer/>
           <ScatterplotBrush/>
           {/* <YourVisContainer/> */}
         </div>

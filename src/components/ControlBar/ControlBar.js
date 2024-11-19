@@ -16,8 +16,6 @@ const numericVariables = [
   "Snowfall",
 ];
 
-// Lista delle opzioni di filtro
-const filterOptions = ["All", "Holiday", "FunctioningDay"];
 
 function ControlBar() {
   const dispatch = useDispatch();
@@ -25,7 +23,6 @@ function ControlBar() {
   // Selectors
   const xAxis = useSelector((state) => state.controlbar.xAxis);
   const yAxis = useSelector((state) => state.controlbar.yAxis);
-  const filterType = useSelector((state) => state.controlbar.filterType);
 
   // Funzione per cambiare l'asse X
   const handleXAxisChange = (event) => {
@@ -35,11 +32,6 @@ function ControlBar() {
   // Funzione per cambiare l'asse Y
   const handleYAxisChange = (event) => {
     dispatch(setYAxis(event.target.value)); // Cambia l'asse Y
-  };
-
-  // Funzione per cambiare il filtro
-  const handleFilterChange = (event) => {
-    dispatch(setFilterType(event.target.value)); // Cambia il tipo di filtro
   };
 
   return (

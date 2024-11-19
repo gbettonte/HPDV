@@ -15,10 +15,7 @@ export const  controlBarSlice = createSlice({
         },
         setYAxis: (state, action) => {
           state.yAxis = action.payload;
-        },
-        setFilterType: (state, action) => {
-          state.filterType = action.payload; // Aggiorna il filtro
-        },
+        }
       }
 });
 

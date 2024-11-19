@@ -2,18 +2,29 @@
     text-align: center;
     height: 100%;
 }
-#control-bar-container{
+
+#control-bar-container {
     height: 10%;
 }
-#view-container{
-    height:80%;
+
+#view-container {
+    height: 80%;
+    display: flex;           /* Usa Flexbox per la disposizione orizzontale */
+    justify-content: center; /* Centra gli scatterplot */
+    align-items: center;     /* Centra gli scatterplot verticalmente */
+    gap: 20px;               /* Distanza tra gli scatterplot */
 }
+
 .row:after {
     content: "";
     display: table;
     clear: both;
 }
-.col2{
-    float: left;
-    width: 50%;
+
+/* Allinea le colonne in una riga */
+.col2 {
+    flex: 1;  /* Ogni scatterplot occupa lo stesso spazio */
+    max-width: 33%; /* Impedisce che ogni scatterplot si allarghi oltre un terzo della larghezza */
+    min-width: 200px; /* Imposta una larghezza minima per ogni scatterplot */
+    margin: 10px;
 }

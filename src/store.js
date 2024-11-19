@@ -6,6 +6,6 @@ export default configureStore({
   reducer: {
     dataSet: dataSetReducer,
     controlbar: controlBarReducer,
-    brushslice: brushReducer,  // Aggiungi il reducer per brush
+    brushslice: brushReducer,  
     }
 })
