@@ -2,9 +2,7 @@ import './App.css';
 import { useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import { getSeoulBikeData } from './redux/DataSetSlice';
-import ControlBar_year from './components/ControlBar/ControlBar_year';
 import ControlBar from './components/ControlBar/ControlBar';
-import CalendarChart from './components/Calendar/Calendar';
 
 import ScatterplotContainer from "./components/scatterplot/ScatterplotContainer";
 import ScatterplotBrush from "./components/brush_scatterplot/ScatterplotBrush";
@@ -30,7 +28,7 @@ function App() {
         <div id="text-container" className="text-container">
         <h1>Seul Bike Dataset</h1>
         <p>
-          Code: <a href="https://github.com/gbettonte/HPDV/tree/my_branhc_giorgio">Giorgio_Bettonte_Github</a>.
+          Code: <a href="https://github.com/gbettonte/HPDV/tree/my_branch_giorgio">Giorgio_Bettonte_Github</a>.
         </p>
         <p>
           It is possible to select variables with the controlbar. <br />
