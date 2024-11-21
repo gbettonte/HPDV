@@ -7,6 +7,7 @@ export const  controlBarSlice = createSlice({
     initialState: {
       xAxis: 'RentedBikeCount',  // default yxaxis
       yAxis: 'Temperature',      // default y axis
+      Year: '2017',
       data: [],                  // Data
     },
     reducers: {
@@ -15,10 +16,13 @@ export const  controlBarSlice = createSlice({
         },
         setYAxis: (state, action) => {
           state.yAxis = action.payload;
+        },
+        setYear: (state, action) => {
+          state.Year = action.payload;
         }
       }
 });
 
-export const { setXAxis, setYAxis, setFilterType, updateSelectedItem } = controlBarSlice.actions;
+export const { setXAxis, setYAxis, setYear, updateSelectedItem } = controlBarSlice.actions;
 
 export default controlBarSlice.reducer;

@@ -1,7 +1,7 @@
 import '../scatterplot/Scatterplot.css'
 import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import ScatterplotD3 from './Scatterplot-d3';
+import ScatterplotD3 from '../scatterplot/Scatterplot-d3';
 import { setXAxis, setYAxis } from "../../redux/ControlBarSlice";
 import { selectedItems } from "../../redux/BrushSlice"; // Importa la selezione del brushing
 

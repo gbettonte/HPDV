@@ -111,23 +111,31 @@ class ScatterplotD3{
     
 
     updateAxis = function(visData,xAttribute,yAttribute){
-        const minX = d3.min(visData.map(item=>item[xAttribute]));
-        const maxX = d3.max(visData.map(item=>item[xAttribute]));
-        this.xScale.domain([minX, maxX]);
-        const minY = d3.min(visData.map(item=>item[yAttribute]));
-        const maxY = d3.max(visData.map(item=>item[yAttribute]));
+        const paddingFactor = 0.1; // 10% di padding
 
-        this.yScale.domain([minY, maxY]);
-        //console.log("xScale domain:", this.xScale.domain()); // Verifica il dominio della scala X
-    //console.log("yScale domain:", this.yScale.domain()); // Verifica il dominio della scala Y
+        // Calcola il dominio con il padding per l'asse X
+        const minX = d3.min(visData.map(item => item[xAttribute]));
+        const maxX = d3.max(visData.map(item => item[xAttribute]));
+        const xPadding = (maxX - minX) * paddingFactor; // Calcolo del padding
+        this.xScale.domain([minX - xPadding, maxX + xPadding]); // Applica il padding
+        
+        // Calcola il dominio con il padding per l'asse Y
+        const minY = d3.min(visData.map(item => item[yAttribute]));
+        const maxY = d3.max(visData.map(item => item[yAttribute]));
+        const yPadding = (maxY - minY) * paddingFactor; // Calcolo del padding
+        this.yScale.domain([minY - yPadding, maxY + yPadding]); // Applica il padding
+        
+        // Aggiorna gli assi
         this.matSvg.select(".xAxisG")
-            .transition().duration(this.transitionDuration)
-            .call(d3.axisBottom(this.xScale))
-        ;
+            .transition()
+            .duration(this.transitionDuration)
+            .call(d3.axisBottom(this.xScale));
+        
         this.matSvg.select(".yAxisG")
-            .transition().duration(this.transitionDuration)
-            .call(d3.axisLeft(this.yScale))
-        ;
+            .transition()
+            .duration(this.transitionDuration)
+            .call(d3.axisLeft(this.yScale));
+        
     }
 
     renderScatterplot = function (visData, xAttribute, yAttribute, selectedItems, controllerMethods){

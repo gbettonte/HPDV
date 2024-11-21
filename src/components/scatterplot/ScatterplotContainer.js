@@ -58,23 +58,10 @@ function ScatterplotContainer() {
         //console.log("Selected X Axis:", xAxis, "Selected Y Axis:", yAxis);
         //console.log("Bike data:", bikeData);
 
-        // Filtra i dati in base al filterType (All, Holiday, FunctioningDay)
-        const filteredData = (() => {
-            if (filterType === "All") {
-                return bikeData;
-            } else if (filterType === "Holiday") {
-                return bikeData.filter((point) => point.Holiday === "Holiday");
-            } else if (filterType === "FunctioningDay") {
-                return bikeData.filter((point) => point.FunctioningDay === "Yes");
-            } else {
-                return bikeData;
-            }
-        })();
-
         // Verifica che i dati filtrati siano validi e che gli assi siano selezionati
-        if (filteredData && xAxis && yAxis) {
+        if (bikeData && xAxis && yAxis) {
             // Converte i dati in numerici se non lo sono
-            const validBikeData = filteredData.filter(item => !isNaN(item[xAxis]) && !isNaN(item[yAxis]));
+            const validBikeData = bikeData.filter(item => !isNaN(item[xAxis]) && !isNaN(item[yAxis]));
 
             if (validBikeData.length === 0) {
                 console.error("No valid data for selected axes.");

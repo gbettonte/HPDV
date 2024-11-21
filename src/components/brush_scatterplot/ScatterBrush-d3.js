@@ -162,21 +162,31 @@ class ScatterplotD3 {
     }
 
     updateAxis(visData, xAttribute, yAttribute) {
+        const paddingFactor = 0.1; // 10% di padding
+
+        // Calcola il dominio con il padding per l'asse X
         const minX = d3.min(visData.map(item => item[xAttribute]));
         const maxX = d3.max(visData.map(item => item[xAttribute]));
-        this.xScale.domain([minX, maxX]);
-
+        const xPadding = (maxX - minX) * paddingFactor; // Calcolo del padding
+        this.xScale.domain([minX - xPadding, maxX + xPadding]); // Applica il padding
+        
+        // Calcola il dominio con il padding per l'asse Y
         const minY = d3.min(visData.map(item => item[yAttribute]));
         const maxY = d3.max(visData.map(item => item[yAttribute]));
-        this.yScale.domain([minY, maxY]);
-
+        const yPadding = (maxY - minY) * paddingFactor; // Calcolo del padding
+        this.yScale.domain([minY - yPadding, maxY + yPadding]); // Applica il padding
+        
+        // Aggiorna gli assi
         this.matSvg.select(".xAxisG")
-            .transition().duration(this.transitionDuration)
+            .transition()
+            .duration(this.transitionDuration)
             .call(d3.axisBottom(this.xScale));
-
+        
         this.matSvg.select(".yAxisG")
-            .transition().duration(this.transitionDuration)
+            .transition()
+            .duration(this.transitionDuration)
             .call(d3.axisLeft(this.yScale));
+        
     }
 
     renderScatterplot(visData, xAttribute, yAttribute, controllerMethods) {
