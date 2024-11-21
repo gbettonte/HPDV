@@ -7,7 +7,6 @@ class ScatterplotD3{
     height;
     width;
     matSvg;
-    // add specific class properties used for the vis render/updates
     defaultOpacity=0.3;
     transitionDuration=1;
     circleRadius = 3;
@@ -17,10 +16,9 @@ class ScatterplotD3{
     constructor(el) {
         this.el = el;
     
-        // Definisci la scala di colori per la variabile "Seasons"
         this.colorScale = d3.scaleOrdinal()
-            .domain(['Spring', 'Summer', 'Autumn', 'Winter']) // Valori categoriali
-            .range(['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']); // Colori corrispondenti
+            .domain(['Spring', 'Summer', 'Autumn', 'Winter']) 
+            .range(['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']); 
     }
     
     
@@ -109,23 +107,19 @@ class ScatterplotD3{
             );
     }
     
-
+    //update axis and consider a padding
     updateAxis = function(visData,xAttribute,yAttribute){
-        const paddingFactor = 0.1; // 10% di padding
-
-        // Calcola il dominio con il padding per l'asse X
+        const paddingFactor = 0.1; 
         const minX = d3.min(visData.map(item => item[xAttribute]));
         const maxX = d3.max(visData.map(item => item[xAttribute]));
-        const xPadding = (maxX - minX) * paddingFactor; // Calcolo del padding
-        this.xScale.domain([minX - xPadding, maxX + xPadding]); // Applica il padding
-        
-        // Calcola il dominio con il padding per l'asse Y
+        const xPadding = (maxX - minX) * paddingFactor; 
+        this.xScale.domain([minX - xPadding, maxX + xPadding]);
+
         const minY = d3.min(visData.map(item => item[yAttribute]));
         const maxY = d3.max(visData.map(item => item[yAttribute]));
-        const yPadding = (maxY - minY) * paddingFactor; // Calcolo del padding
-        this.yScale.domain([minY - yPadding, maxY + yPadding]); // Applica il padding
-        
-        // Aggiorna gli assi
+        const yPadding = (maxY - minY) * paddingFactor; 
+        this.yScale.domain([minY - yPadding, maxY + yPadding]); 
+
         this.matSvg.select(".xAxisG")
             .transition()
             .duration(this.transitionDuration)
@@ -138,11 +132,11 @@ class ScatterplotD3{
         
     }
 
+    //render the scatter updated
     renderScatterplot = function (visData, xAttribute, yAttribute, selectedItems, controllerMethods){
-        // Crea un Set per gli indici selezionati, per una ricerca più veloce
+
         const selectedIndices = new Set(selectedItems.map(item => item.index));
-    
-        // Aggiorna gli assi
+
         this.updateAxis(visData, xAttribute, yAttribute);
     
         this.matSvg.selectAll(".dotG")

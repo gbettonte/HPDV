@@ -7,7 +7,6 @@ class ScatterplotD3{
     height;
     width;
     matSvg;
-    // add specific class properties used for the vis render/updates
     defaultOpacity=0.3;
     transitionDuration=1;
     circleRadius = 3;
@@ -16,8 +15,6 @@ class ScatterplotD3{
 
     constructor(el) {
         this.el = el;
-    
-        // Definisci la scala di colori per la variabile "Seasons"
         this.colorScale = d3.scaleOrdinal()
             .domain(['Spring', 'Summer', 'Autumn', 'Winter']) // Valori categoriali
             .range(['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']); // Colori corrispondenti
@@ -79,20 +76,19 @@ class ScatterplotD3{
                 const yPos = this.yScale(item[yAttribute]);
                 return "translate("+xPos+","+yPos+")";
             })
-            // Aggiorna il colore basato su `Seasons`
         selection.select(".dotCircle")
         .attr("fill", (item) => {
             // Check if the current item is in selectedItems
             if (selectedItems.find(selectedItem => selectedItem.index === item.index)) {
                 return this.colorScale(item.Seasons);  // Color for selected items
             }
-            return 'black'; // Default color scale
-        });// Usa la scala di colori qui!
+            return 'black'; 
+        });
         this.changeBorderAndOpacity(selection)
     }
 
     highlightSelectedItems(selectedItems){
-        // Crea un Set per gli indici selezionati, per una ricerca più veloce
+
         const selectedIndices = new Set(selectedItems.map(item => item.index));
         
         this.matSvg.selectAll(".dotG")
@@ -100,10 +96,8 @@ class ScatterplotD3{
             .join(
                 enter => enter,
                 update => {
-                    // Cambia colore basato sul Set di indici selezionati
                     update.select(".dotCircle")
                         .attr("fill", (item) => {
-                            // Usa il Set per una ricerca rapida
                             return selectedIndices.has(item.index) ? this.colorScale(item.Seasons) : 'black';
                         });
                     this.changeBorderAndOpacity(update);
@@ -113,17 +107,14 @@ class ScatterplotD3{
     }
     
 
+    //update axis with a padding
     updateAxis = function(visData,xAttribute,yAttribute){
         const minX = d3.min(visData.map(item=>item[xAttribute]));
         const maxX = d3.max(visData.map(item=>item[xAttribute]));
-        // this.xScale.domain([0, maxX]);
         this.xScale.domain([minX, maxX]);
         const minY = d3.min(visData.map(item=>item[yAttribute]));
         const maxY = d3.max(visData.map(item=>item[yAttribute]));
-        // this.yScale.domain([0, maxY]);
         this.yScale.domain([minY, maxY]);
-        //console.log("xScale domain:", this.xScale.domain()); // Verifica il dominio della scala X
-    //console.log("yScale domain:", this.yScale.domain()); // Verifica il dominio della scala Y
         this.matSvg.select(".xAxisG")
             .transition().duration(this.transitionDuration)
             .call(d3.axisBottom(this.xScale))
@@ -135,10 +126,7 @@ class ScatterplotD3{
     }
 
     renderScatterplot = function (visData, xAttribute, yAttribute, selectedItems, controllerMethods){
-        // Crea un Set per gli indici selezionati, per una ricerca più veloce
         const selectedIndices = new Set(selectedItems.map(item => item.index));
-    
-        // Aggiorna gli assi
         this.updateAxis(visData, xAttribute, yAttribute);
     
         this.matSvg.selectAll(".dotG")
